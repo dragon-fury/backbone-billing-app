@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>Backbone Web App</title>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+        
+        <script src="backbone.sessionStorage.js"></script>
+        <script src="new-script.js"></script>
+    </head>
+    <body>
+        <h3>ORDERS</h3>
+		<div id="ordering">
+            <table>
+                <tr>
+                    <td>Item Name</td>
+                    <td>&nbsp;Price</td>
+                </tr>
+                <tr>
+                    <td> <input type="input" id="itemInput" placeholder= "Item name" /> </td>
+                    <td>&#36;<input type="number" id="priceInput" placeholder= "Price" /> </td>
+                </tr>
+            </table>
+            <ul id="orders" style="list-style-type:none"></ul>
+            <div id="footer" style="display:none">
+                <table>
+                    <tr>
+                        <td> Total items ordered : <span id="itemCount"></span> </td>
+                        <td> Total amount : &#36;<span id="totalPrice"></span></td>
+                    </tr>
+                </table>                
+            </div>
+        </div>
+        <script type="text/template" id="itemOrdered">
+            <span class="inputs">
+                <input type="input" class="itemName" value= "<%=item_name%>" readOnly />
+                &#36;<input type="number" class="price" value= "<%=price%>" readOnly />
+                <button class="remove"> Remove Item </button>
+            </span>
+        </script>
+    </body>
+</html>
