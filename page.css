@@ -1,0 +1,45 @@
+#ordering {
+  	border: 1px solid black;
+  	text-align: center;
+  	margin:0 25% 0 25%;
+/*	display:-moz-box;
+  	-moz-box-align:center;
+
+	// Safari, Chrome, and Opera 
+	display:-webkit-box;
+	-webkit-box-align:center;
+
+	// W3C 
+	display:box;
+	box-align:center;*/
+}
+
+table {
+	margin:0 25%;
+}
+
+button {
+    border: 0 none;
+    margin: 5px;
+    padding: 5px;
+    color:red;
+    cursor:pointer;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+input {
+	border:1px solid;
+	padding: 10px;
+    margin: 0 0 10px 0;
+}
+
+.show {
+	pointer-events:none;
+	cursor: pointer;
+	border:0;
+	padding:0;
+	margin: 0;
+	font-size: 15px;
+}

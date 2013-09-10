@@ -1,15 +1,28 @@
 $(function() {
+  var returnedModel = null;
+
   var Yoyo = Backbone.Model.extend({
       defaults: {
-          item_name: "YoYo Special",
+          itemName: "YoYo Special",
           price: 100
+      },
+
+      validate: function(attr) {
+        if(!Number(attr.price))
+          return "Enter price in numbers. "
+      },
+
+      initialize: function() {
+        this.on('invalid', function(model, error){
+          $('.error').text(error);
+        })
       }
   });
 
   var Yoyos = Backbone.Collection.extend({
       model: Yoyo,
       
-      sessionStorage: new Backbone.SessionStorage("billing"),
+      localStorage: new Backbone.LocalStorage("billing"),
 
       totalPrice: function() {
         return this.reduce(function(initial, yoyo) {
@@ -35,6 +48,7 @@ $(function() {
       
     initialize: function(){
         this.model.on('change',this.render, this);
+        this.model.on('sync',this.render, this);
         this.model.on('destroy',this.remove, this);
     },
 
@@ -44,8 +58,8 @@ $(function() {
     },
 
     edit: function(){
-      this.$(".itemName").removeAttr("readonly");
-      this.$(".price").removeAttr("readonly");
+      this.$(".itemName").removeClass("show");
+      this.$(".price").removeClass("show");
       this.$(".itemName").focus();
     },
 
@@ -53,7 +67,9 @@ $(function() {
       var name = this.$(".itemName").val();
       var price = this.$(".price").val();
       
-      this.model.save({"item_name": name, "price": price});
+      returnedModel = this.model.save({itemName: name, price: price});
+      console.log("Md");
+      console.log(returnedModel);
     },
 
     updateItem: function(e) {
@@ -66,7 +82,6 @@ $(function() {
     }
   });
 
-  var yoyos = new Yoyos;
   var YoyoFinal = Backbone.View.extend({
     el: $("#ordering"),
 
@@ -86,10 +101,12 @@ $(function() {
       if(this.collection.length > 0) {
         var totalItems = this.collection.totalItems();
         var totalPrice = this.collection.totalPrice();
-
-        $("#itemCount").text(totalItems);
-        $("#totalPrice").text(totalPrice);
-        $("#footer").show();
+        console.log((returnedModel && returnedModel.validationError));
+        if(!(returnedModel && returnedModel.validationError)) {
+          $("#itemCount").text(totalItems);
+          $("#totalPrice").text(totalPrice);
+          $("#footer").show();
+        }
       } else {
         $("#footer").hide();
       }
@@ -104,9 +121,13 @@ $(function() {
       var name = $("#itemInput").val();
       var price = $("#priceInput").val();
       if (!name || !price) return;
-      this.collection.create({item_name: name, price: price});
-      $("#itemInput").val('');
-      $("#priceInput").val('');
+      returnedModel = this.collection.create({itemName: name, price: price});
+
+      if(!returnedModel.validationError) {
+        $(".error").text('');
+        $("#itemInput").val('');
+        $("#priceInput").val('');
+      }
     },
 
     addAll: function() {
